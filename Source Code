@@ -1,0 +1,36 @@
+create database employee;
+use employee;
+select * from data_science_team;
+describe data_science_team;
+select * from emp_record_table;
+select * from proj_table;
+select EMP_ID, FIRST_NAME, LAST_NAME, GENDER, DEPT from emp_record_table;
+select EMP_ID, FIRST_NAME, LAST_NAME, GENDER, DEPT, EMP_RATING from emp_record_table where EMP_RATING < 2;
+select EMP_ID, FIRST_NAME, LAST_NAME, GENDER, DEPT, EMP_RATING from emp_record_table where EMP_RATING >4;
+select EMP_ID, FIRST_NAME, LAST_NAME, GENDER, DEPT, EMP_RATING from emp_record_table where EMP_RATING > 2 and EMP_RATING<4;
+select concat(FIRST_NAME, " ", LAST_NAME) as NAME from emp_record_table where DEPT="FINANCE";
+select EMP_ID, FIRST_NAME, LAST_NAME, ROLE from emp_record_table where ROLE in ("PRESIDENT", "LEAD DATA SCIENTIST",
+"SENIOR DATA SCIENTIST", "MANAGER");
+select EMP_ID, FIRST_NAME, LAST_NAME, ROLE from emp_record_table where ROLE in ("PRESIDENT", "ASSOCIATE DATA SCIENTIST",
+"JUNIOR DATA SCIENTIST");
+select FIRST_NAME, LAST_NAME from emp_record_table where DEPT="FINANCE" union 
+select FIRST_NAME, LAST_NAME from emp_record_table where DEPT="HEALTHCARE";
+select concat(FIRST_NAME," ", LAST_NAME) as NAME from emp_record_table where DEPT="FINANCE" union 
+select concat(FIRST_NAME," ", LAST_NAME) as NAME from emp_record_table where DEPT="HEALTHCARE";
+select distinct DEPT from emp_record_table;
+SELECT  m.EMP_ID, m.FIRST_NAME,m.LAST_NAME,m.ROLE,m.DEPT,m.EMP_RATING,max(m.EMP_RATING) OVER(PARTITION BY m.DEPT)AS "MAX_DEPT_RATING"FROM emp_record_table as m;
+select ROLE, min(SALARY), max(SALARY) from emp_record_table group by ROLE;
+select row_number() over(order by EXP desc) as ranking, concat(FIRST_NAME," ", LAST_NAME) as NAME from emp_record_table order by EXP;
+select rank() over(order by EXP desc) as ranking, concat(FIRST_NAME," ", LAST_NAME) as NAME from emp_record_table;
+select dense_rank() over(order by EXP desc) as ranking, concat(FIRST_NAME," ", LAST_NAME) as NAME from emp_record_table order by EXP desc;
+create view emp_details as select EMP_ID, concat(FIRST_NAME," ", LAST_NAME) as NAME, COUNTRY from emp_record_table 
+where SALARY>6000 order by COUNTRY;
+select * from emp_details;
+select EMP_ID, concat(FIRST_NAME," ", LAST_NAME) as NAME from emp_record_table where EXP>10;
+select EMP_ID, concat(FIRST_NAME," ", LAST_NAME) as NAME, (0.05*SALARY*EMP_RATING) as bonus from emp_record_table;
+select avg(SALARY), CONTINENT from emp_record_table group by CONTINENT;
+select avg(SALARY), COUNTRY from emp_record_table group by COUNTRY;
+select avg(SALARY), concat(CONTINENT, ',', COUNTRY) as region from emp_record_table group by region;
+CALL `employee`.`details`();
+select EMP_ID from emp_record_table where FIRST_NAME in('Eric');
+select count(EMP_ID) from emp_record_table where FIRST_NAME IN ('Dianna');
